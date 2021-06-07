@@ -39,8 +39,8 @@ function scrollEvent(no) {
 
 //Dynamic Style for Navigation Menu
 function navBarStyle () {
-    let sheet = window.document.styleSheets[1];
-    let styles = `a {
+    let anchor = document.getElementsByTagName('a');
+    let styles = `
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -51,13 +51,32 @@ function navBarStyle () {
         background-color: rgb(220, 220, 220);
         font-size: large;
         transform:translateX(-0.5em);
-    }`;
-    let hover = `a:hover {
-        background-color: rgb(47, 0, 255);
-        color: #fff;
-    }`
-    sheet.insertRule(styles, sheet.cssRules.length);
-    sheet.insertRule(hover, sheet.cssRules.length);
+    `;
+
+    for (i = 0; i < anchor.length; i++) {
+        anchor[i].setAttribute('style', styles);
+    }
+
+    mouseOver();
+}
+
+//Dynamic Style on hover
+function mouseOver () {
+    let anchor = document.getElementsByTagName('a');
+
+    for (i = 0; i < anchor.length; i++) {
+        anchor[i].addEventListener('mouseenter', function (event) {
+            event.target.style.backgroundColor = "rgb(100, 0, 255)";
+            event.target.style.color = "#fff";
+        })
+        //Blue color stays in case of activation
+        if (anchor[i].style.backgroundColor == "rgb(47, 0, 255)") {
+            anchor[i].addEventListener('mouseout', function (event) {
+                event.target.style.backgroundColor = "rgb(220, 220, 220)";
+                event.target.style.color = "#000";
+            })
+        }
+    }
 }
 
 // Activate section on click and deactivate previous one
@@ -79,7 +98,7 @@ function navActivate(no) {
         if (otherNavs[i].style.backgroundColor == "rgb(47, 0, 255)") {
             oldNav = otherNavs[i];
             oldNav.style.backgroundColor = "rgb(220, 220, 220)";
-            oldNav.style.color = "#000";           
+            oldNav.style.color = "#000";          
         }
     }
 
